@@ -1,10 +1,53 @@
 
 from __future__ import absolute_import, unicode_literals
 import os
+import json
 
 from django import VERSION as DJANGO_VERSION
 from django.utils.translation import ugettext_lazy as _
+from django.core.exceptions import ImproperlyConfigured
 
+# PATH CONFIGURATION
+# Build paths inside the core app like this: os.path.join(APP_DIR, ...)
+# Build paths inside the project app like this: os.path.join(PROJECT_DIR, ...)
+APP_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SETTINGS_DIR = os.path.join(APP_DIR, 'config')
+PROJECT_DIR = os.path.dirname(APP_DIR)
+
+try:
+    with open(os.path.join(SETTINGS_DIR, 'keys.json'), 'r') as fh:
+        keys = json.loads(fh.read())
+        fh.close()
+except EnvironmentError:
+    msg = 'Configure keys.json in the settings folder'
+    raise ImproperlyConfigured(msg)
+except ValueError as err:
+    raise err
+
+
+def get_key(key, keys=keys):
+    """Retrieve a configuration key value from a key dictionary or
+    environment variable.
+    :param key: Settings config dictionary key
+    :type key: str
+    :param keys: Key dictionary.
+        Default: Values from keys.json as dictionary
+    :type keys: dict
+    :returns: Value from a key dictionary
+    """
+    val = keys.get(key) or os.environ.get(key)
+    if not val:
+        msg = (
+            'Set the "{}" setting in keys.json or as environment variable.'
+        ).format(key)
+        raise ImproperlyConfigured(msg)
+    return val
+
+
+######
+# SECRET CONFIGURATION
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
+SECRET_KEY = get_key('SECRET_KEY')
 
 ######################
 # MEZZANINE SETTINGS #
