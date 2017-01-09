@@ -7,10 +7,6 @@
 
 DEBUG = True
 
-# Make these unique, and don't share it with anybody.
-SECRET_KEY = "kryocaoor^c+3r76r)qpide6*p)o!^wm9*yuc*eajp+^*))_^t"
-NEVERCACHE_KEY = "-@yo1%%qoq2l(w=c-8d7!rgrap3kr-euao5tiloq5rt80xjh(d"
-
 DATABASES = {
     "default": {
         # Ends with "postgresql_psycopg2", "mysql", "sqlite3" or "oracle".
