@@ -377,3 +377,10 @@ except ImportError:
     pass
 else:
     set_dynamic_settings(globals())
+
+
+####################
+# PROJECT DEFAULTS #
+####################
+SITE_TITLE = "Save22 PH"
+SITE_TAGLINE = "Shopping, Promotions, Deals & Sales"
